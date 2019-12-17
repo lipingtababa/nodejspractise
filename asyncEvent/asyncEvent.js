@@ -14,4 +14,8 @@ server.listen(8124, function(){
     console.log("listening event");
 });
 
+server.on("close", function(){
+    console.log("Connection closed");
+})
+
 console.log("Server starts running");
