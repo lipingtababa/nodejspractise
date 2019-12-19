@@ -19,6 +19,7 @@ fs. readdir("./data/", function(err, files){
 				return;
 			}
 
+			//TODO here you are unable to pass the file name to the callback function, which is a big issue
 			fs.readFile('./data/'+name,'utf8', function (err, data) {
 					if(err){
 						console.error(err.messge);

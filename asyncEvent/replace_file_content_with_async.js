@@ -8,6 +8,7 @@ async.waterfall(
 			callback(err, data);
 		});
 	},
+	//The code works but I don't know how function modify(text, callback) match the function callback(err, data).
 	function modify(text, callback){
 		var adjdata = text.replace(/apple/g, 'orange');
 		callback(null, adjdata);
