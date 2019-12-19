@@ -10,6 +10,7 @@ async.waterfall(
         });
     },
 
+    //TODO it will not workl if there are multiple files under the directory
     function loopFiles(files, callback){
         files.forEach(function(name){
             callback(null, name);
