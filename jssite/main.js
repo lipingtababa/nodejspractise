@@ -1,1 +1,6 @@
-console.log("main.jsloaded");
+$(document).ready(
+	function(){
+		'use strict';
+		console.log("main.jsloaded");
+	}
+);
