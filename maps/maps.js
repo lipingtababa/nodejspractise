@@ -5,8 +5,8 @@ function initMap() {
     console.log("initMaps() has been called");
     google.maps.visualRefresh = true;
     var mapOptions = {
-        center: new google.maps.LatLng(39.9078, 32.8252),
-        zoom:10,
+        center: new google.maps.LatLng(59.329529, 18.089642),
+        zoom:12,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 
