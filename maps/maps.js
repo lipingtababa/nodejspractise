@@ -8,17 +8,30 @@ function initMap() {
     //Default to Shenzhen
     let lat = 22.558953, lng = 114.118784;
 
+    //create a new StyledMapType and reference it with the style array
+    let bluishStyledMap = new google.maps.StyledMapType(bluishStyle,
+        {name: "Bluish Google Base Maps with Pink Highways"});
+
     var mapOptions = {
         center: new google.maps.LatLng(lat, lng),
         zoom:12,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
+        mapTypeControlOptions: {mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'new_bluish_style']}
     };
 
-    //Getting map DOM ekement
+    //Getting map DOM element
     var mapElement = document.getElementById('mapDiv');
     map = new google.maps.Map(mapElement, mapOptions);
+
+    //relate new mapTypeId to the styledMapType object
+    map.mapTypes.set('new_bluish_style', bluishStyledMap);
+    //set this new mapTypeId to be displayed
+    map.setMapTypeId('new_bluish_style');
+    
     startButtonEvents();
 }
+
+
+
 
 if(navigator.geolocation){
     console.log("geolocation is enabled");
@@ -36,29 +49,18 @@ if(navigator.geolocation){
 google.maps.event.addDomListener(window, 'load', initMap);
 
 function startButtonEvents(){
-    document.getElementById('buttonZoomToIstanbul').addEventListener('click', function(){
-        var istanbul = new google.maps.LatLng(41.0579, 29.0340);
-        map.setCenter(istanbul);
+    document.getElementById('buttonSatellite').addEventListener('click', function(){
+        map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
     });
-    document.getElementById('buttonZoomToStreet').addEventListener('click', function(){
-        map.setZoom(18);
+    document.getElementById('buttonRoadmap').addEventListener('click', function(){
+        map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
     });
-    document.getElementById('buttonDisableDrag').addEventListener('click', function(){
-        map.setOptions({draggable:false});
+    document.getElementById('ButtonHybrid').addEventListener('click', function(){
+        map.setMapTypeId(google.maps.MapTypeId.HYBRID);
     });
-    document.getElementById('buttonMaxZoom').addEventListener('click', function(){
-        map.setOptions({maxZoom:12});
-    });
-    document.getElementById('buttonMinZoom').addEventListener('click', function(){
-        map.setOptions({minZoom:5});
-    });
-    document.getElementById('buttonChangeUI').addEventListener('click', function(){
-        map.setOptions ({ disableDefaultUI: true });
-    });
-    document.getElementById('buttonDisableScroll').addEventListener('click', function(){
-        map.setOptions ({ scrollwheel: false });
-    });
-    
+    document.getElementById('ButtonTerrain').addEventListener('click', function(){
+        map.setMapTypeId(google.maps.MapTypeId.TERRAIN);
+    });    
 }
 
 console.log("maps.js has been loaded");
