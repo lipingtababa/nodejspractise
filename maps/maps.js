@@ -1,11 +1,19 @@
+// The base map
 var map;
+// The layer map
+var layerMap;
+//The default location
+var defaultLocation = new google.maps.LatLng(41.3854, 2.1822);
+
 console.log("Loading maps.js");
+google.maps.event.addDomListener(window, 'load', initMap);
+console.log("maps.js has been loaded");
 
 function initMap() {
     console.log("initMaps() has been called");
     google.maps.visualRefresh = true;
     var mapOptions = {
-        center: new google.maps.LatLng(59.329529, 18.089642),
+        center: defaultLocation,
         zoom:12,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
@@ -13,7 +21,28 @@ function initMap() {
     //Getting map DOM ekement
     var mapElement = document.getElementById('mapDiv');
     map = new google.maps.Map(mapElement, mapOptions);
+
+    layerMap = new google.maps.TrafficLayer();
+    layerMap.setMap(map);
+
+    registerButtonEvents();
 }
 
-google.maps.event.addDomListener(window, 'load', initMap);
-console.log("maps.js has been loaded");
+function registerButtonEvents(){
+    document.getElementById('ButtonOverlay').addEventListener('click', function(){
+        let OSMLayer = document.getElementById("ButtonOverlay");
+        console.log("Overlay click event captured");
+        if (OSMLayer.checked)
+        {
+            //Load the layer
+            layerMap.setMap(map);
+        }
+        else
+        {
+            //offload the layer
+            layerMap.setMap(null);
+        }
+    });
+}
+
+
