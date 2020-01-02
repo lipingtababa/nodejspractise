@@ -8,30 +8,30 @@ function initMap() {
     //Default to Shenzhen
     let lat = 22.558953, lng = 114.118784;
 
-    //create a new StyledMapType and reference it with the style array
-    let bluishStyledMap = new google.maps.StyledMapType(bluishStyle,
-        {name: "Bluish Google Base Maps with Pink Highways"});
+    //Create a new base map with open street map
+    var osmMapType = new google.maps.ImageMapType({getTileUrl:function(coord, zoom){
+                            return "http://tile.openstreemap.org/"+zoom+"/"+coord.x+"/"+coord.y+".png";
+                        },
+                        tileSize: new google.maps.Size(256, 256),
+                        name:"OpenStreetMap",
+                        maxZoom:18  
+    });
 
     var mapOptions = {
         center: new google.maps.LatLng(lat, lng),
-        zoom:12,
-        mapTypeControlOptions: {mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'new_bluish_style']}
+        zoom:10,
+        mapTypeIds: [google.maps.MapTypeId.ROADMAP,'OSM']
     };
 
-    //Getting map DOM element
-    var mapElement = document.getElementById('mapDiv');
-    map = new google.maps.Map(mapElement, mapOptions);
+    //Create a map with the mapDiv
+    map = new google.maps.Map(document.getElementById('mapDiv'), mapOptions);
 
-    //relate new mapTypeId to the styledMapType object
-    map.mapTypes.set('new_bluish_style', bluishStyledMap);
-    //set this new mapTypeId to be displayed
-    map.setMapTypeId('new_bluish_style');
+    //Set the base map to the open steet map
+    map.mapTypes.set('OSM', osmMapType);
+    map.setMapTypeId('OSM');
     
     startButtonEvents();
 }
-
-
-
 
 if(navigator.geolocation){
     console.log("geolocation is enabled");
@@ -51,6 +51,7 @@ google.maps.event.addDomListener(window, 'load', initMap);
 function startButtonEvents(){
     document.getElementById('buttonSatellite').addEventListener('click', function(){
         map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
+        map.setTilt(45);
     });
     document.getElementById('buttonRoadmap').addEventListener('click', function(){
         map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
