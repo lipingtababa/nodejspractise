@@ -22,7 +22,7 @@ function initMap() {
     var mapElement = document.getElementById('mapDiv');
     map = new google.maps.Map(mapElement, mapOptions);
 
-    layerMap = new google.maps.TransitLayer();
+    layerMap = new google.maps.panoramio.PanoramioLayer();
     layerMap.setMap(map);
 
     registerButtonEvents();
