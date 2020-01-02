@@ -19,5 +19,6 @@ var buildPlanMapType = new google.maps.ImageMapType({
     },
     tileSize: new google.maps.Size(256, 256),
     name: "Google IO Building Plan",
+    opacity:0.5,
     maxZoom: 20
 });
