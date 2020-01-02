@@ -1,24 +1,17 @@
 var map;
-//Create a new base map with open street map
-var osmMapType = new google.maps.ImageMapType({getTileUrl:function(coord, zoom){
-        return "http://tile.openstreetmap.org/"+zoom+"/"+coord.x+"/"+coord.y+".png";
-    },
-    tileSize: new google.maps.Size(256, 256),
-    name:"OpenStreetMap",
-    maxZoom:18
-});
+
+//Default to Google Event Venue
+var googleIOLocation = new google.maps.LatLng(37.78320, -122.40421);
 
 console.log("Loading maps.js");
 
 function initMap() {
     console.log("initMaps() has been called");
     google.maps.visualRefresh = true;
-    //Default to Shenzhen
-    let lat = 22.558953, lng = 114.118784;
 
     var mapOptions = {
-        center: new google.maps.LatLng(lat, lng),
-        zoom:10,
+        center: googleIOLocation,
+        zoom:18,
         mapTypeControlOptions:{
             mapTypeIds:[google.maps.MapTypeId.ROADMAP, google.maps.MapTypeId.SATELLITE]
         }
@@ -29,7 +22,7 @@ function initMap() {
 
     //Set the base map to ROADMAP
     map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
-    map.overlayMapTypes.insertAt(0, null);
+    map.overlayMapTypes.insertAt(0, buildPlanMapType);
 
     startButtonEvents();
 }
@@ -64,10 +57,13 @@ function startButtonEvents(){
         map.setMapTypeId(google.maps.MapTypeId.TERRAIN);
     });    
     document.getElementById('ButtonOverlay').addEventListener('click', function(){
-        var OSMLayer = document.getElementById("ButtonOverlay");
+        let OSMLayer = document.getElementById("ButtonOverlay");
+        console.log("Overlay click event captured");
         if (OSMLayer.checked)
         {
-            map.overlayMapTypes.setAt(0, osmMapType);
+            map.setCenter(googleIOLocation);
+            map.setZoom(18);
+            map.overlayMapTypes.setAt(0, buildPlanMapType);
         }
         else
         {
