@@ -1,21 +1,17 @@
 <html>
 <head>
     <link rel="stylesheet" href="maps.css">
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdM426FEIzMTYy5zgKVRXpzQ7E9HC53io&sensor-false"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdM426FEIzMTYy5zgKVRXpzQ7E9HC53io&sensor-false&libraries=visualization"></script>
     <script type="text/javascript" src="stylish.js" ></script>
+    <script type="text/javascript" src="heatMapPoints.js"></script>
     <script type="text/javascript" src="buildPlan.js" ></script>
     <script type="text/javascript" src="maps.js" ></script>
 </head>
 
 <body>    
     <H1>Google Map for Fun</H1>
-    <input id="buttonSatellite" type="button" value="Satellit"></input>
-    <input id="buttonRoadmap" type="button" value="RoadMap"></input>
-    <input id="ButtonHybrid" type="button" value="Hybrid"></input>
-    <input id="ButtonTerrain" type="button" value="Terrain"></input>
-    <p></p>
-    <label for="OSM">Google I/O Overlay On/Off</label>
-    <input id="ButtonOverlay" type="checkbox"></input>
+    <label for="OSM">Heatmap Layer On/Off</label>
+    <input id="ButtonOverlay" type="checkbox" checked></input>
     <div id="mapDiv"></div>
 </body>
 

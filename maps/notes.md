@@ -13,3 +13,4 @@ https://tile.openstreetmap.org/2/3/1.png
 
 # Base Map
 We can also use tiled map services as overlays to the base maps.
+## mapTypeControl
