@@ -22,10 +22,23 @@ function initMap() {
     var mapElement = document.getElementById('mapDiv');
     map = new google.maps.Map(mapElement, mapOptions);
 
-    layerMap = new google.maps.TrafficLayer();
+    layerMap = new google.maps.TransitLayer();
     layerMap.setMap(map);
 
     registerButtonEvents();
+    registerGetCurrentPosition();
+}
+
+function registerGetCurrentPosition(){
+    if(navigator.geolocation){
+        console.log("geolocation is enabled");
+        navigator.geolocation.getCurrentPosition(function(position){
+            console.log("setCenter is called");
+            //If the navigator support geolocation, then set the map to user's current location.
+            var devCenter = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            map.setCenter(devCenter);
+        })
+    }
 }
 
 function registerButtonEvents(){
