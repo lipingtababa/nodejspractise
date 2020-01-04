@@ -1,9 +1,16 @@
 var map;
 
 //Default to Google Event Venue
-var googleIOLocation = new google.maps.LatLng(37.78320, -122.40421);
+var googleIOLocation = new google.maps.LatLng(38, 30);
 
 console.log("Loading maps.js");
+
+
+let minLat = 36,
+maxLat = 42,
+minLng = 25,
+maxLng = 44,
+markerId = 1;
 
 function initMap() {
     console.log("initMaps() has been called");
@@ -11,7 +18,7 @@ function initMap() {
 
     var mapOptions = {
         center: googleIOLocation,
-        zoom:18,
+        zoom:5,
         mapTypeControlOptions:{
             mapTypeIds:[google.maps.MapTypeId.ROADMAP, google.maps.MapTypeId.SATELLITE]
         }
@@ -27,49 +34,54 @@ function initMap() {
     startButtonEvents();
 }
 
-if(navigator.geolocation){
-    console.log("geolocation is enabled");
-    navigator.geolocation.getCurrentPosition(function(position){
-        console.log("setCenter is called");
-        //If the navigator support geolocation, then set the map to user's current location.
-        let lat = position.coords.latitude;
-        let lng = position.coords.longitude;
-        var devCenter = new google.maps.LatLng(lat, lng);
-        map.setCenter(devCenter);
-        map.setZoom(15);
-    })
+function startButtonEvents(){
+    document.getElementById('addStandardMarker').addEventListener('click', function(){
+        addStandardMarker();
+    });
+    document.getElementById('addIconMarker').addEventListener('click', function(){
+        addIconMarker();
+    });
 }
+
+function createRandomLatLng() {
+    let deltaLat = maxLat - minLat;
+    let deltaLng = maxLng - minLng;
+    let rndNumLat = Math.random();
+    let newLat = minLat + rndNumLat * deltaLat;
+    let rndNumLng = Math.random();
+    let newLng = minLng + rndNumLng * deltaLng;
+    return new google.maps.LatLng(newLat, newLng);
+}
+
+function addStandardMarker() {
+    var coordinate = createRandomLatLng();
+    var marker = new google.maps.Marker({
+                        position: coordinate,
+                        map: map,
+                        title: 'Random Marker - ' + markerId
+                    });
+    // If you don't specify a Map during the initialization
+    //of the Marker you can add it later using the line
+    //below
+    //marker.setMap(map);
+    markerId++;
+}
+
+function addIconMarker() {
+    let markerIcons = ['coffee', 'restaurant_fish', 'walkingtour', 'postal', 'airport'];
+    let rndMarkerId = Math.floor(Math.random() * markerIcons.length);
+    let coordinate = createRandomLatLng();
+    let marker = new google.maps.Marker({
+                        position: coordinate,
+                        map: map,
+                        icon: 'img/' + markerIcons[rndMarkerId] + '.png',
+                        title: 'Random Marker - ' + markerId
+    });
+    markerId++;
+}
+
 
 google.maps.event.addDomListener(window, 'load', initMap);
 
-function startButtonEvents(){
-    document.getElementById('buttonSatellite').addEventListener('click', function(){
-        map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
-        map.setTilt(45);
-    });
-    document.getElementById('buttonRoadmap').addEventListener('click', function(){
-        map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
-    });
-    document.getElementById('ButtonHybrid').addEventListener('click', function(){
-        map.setMapTypeId(google.maps.MapTypeId.HYBRID);
-    });
-    document.getElementById('ButtonTerrain').addEventListener('click', function(){
-        map.setMapTypeId(google.maps.MapTypeId.TERRAIN);
-    });    
-    document.getElementById('ButtonOverlay').addEventListener('click', function(){
-        let OSMLayer = document.getElementById("ButtonOverlay");
-        console.log("Overlay click event captured");
-        if (OSMLayer.checked)
-        {
-            map.setCenter(googleIOLocation);
-            map.setZoom(18);
-            map.overlayMapTypes.setAt(0, buildPlanMapType);
-        }
-        else
-        {
-            map.overlayMapTypes.setAt(0, null);
-        }
-    });
-}
 
 console.log("maps.js has been loaded");
