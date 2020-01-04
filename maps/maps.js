@@ -30,66 +30,9 @@ function initMap() {
     //Set the base map to ROADMAP
     map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
 
-    startButtonEvents();
+    addPolyline();
 }
 
-function startButtonEvents(){
-    document.getElementById('addStandardMarker').addEventListener('click', function(){
-        addStandardMarker();
-    });
-    document.getElementById('addIconMarker').addEventListener('click', function(){
-        addIconMarker();
-    });
-}
-
-function createRandomLatLng() {
-    let deltaLat = maxLat - minLat;
-    let deltaLng = maxLng - minLng;
-    let rndNumLat = Math.random();
-    let newLat = minLat + rndNumLat * deltaLat;
-    let rndNumLng = Math.random();
-    let newLng = minLng + rndNumLng * deltaLng;
-    return new google.maps.LatLng(newLat, newLng);
-}
-
-function addStandardMarker() {
-    var coordinate = createRandomLatLng();
-    var marker = new google.maps.Marker({
-                        position: coordinate,
-                        map: map,
-                        title: 'Random Marker - ' + markerId
-                    });
-
-    var infowindow = new google.maps.InfoWindow({
-        content: 'Marker Info Window – ID : ' + markerId
-        });
-        
-    google.maps.event.addListener(marker, 'click', function(){
-                                                    infowindow.open(map, marker);
-                                                    }
-                        );
-
-    // If you don't specify a Map during the initialization
-    //of the Marker you can add it later using the line
-    //below
-    //marker.setMap(map);
-    markerId++;
-
-
-}
-
-function addIconMarker() {
-    let markerIcons = ['coffee', 'restaurant_fish', 'walkingtour', 'postal', 'airport'];
-    let rndMarkerId = Math.floor(Math.random() * markerIcons.length);
-    let coordinate = createRandomLatLng();
-    let marker = new google.maps.Marker({
-                        position: coordinate,
-                        map: map,
-                        icon: 'img/' + markerIcons[rndMarkerId] + '.png',
-                        title: 'Random Marker - ' + markerId
-    });
-    markerId++;
-}
 
 
 google.maps.event.addDomListener(window, 'load', initMap);
@@ -100,3 +43,33 @@ google.maps.event.addDomListener(window, 'load', initMap);
     
 
 console.log("maps.js has been loaded");
+
+var lineCoordinates = [
+    [41.01306,29.14672],[40.8096,29.4818],
+    [40.7971,29.9761],[40.7181,30.4980],
+    [40.8429,31.0253],[40.7430,31.6241],
+    [40.7472,32.1899],[39.9097,32.8216]
+    ];
+    
+function addPolyline () {
+    //First we iterate over the coordinates array to create a
+    // new array which includes objects of LatLng class.
+    var pointCount = lineCoordinates.length;
+    var linePath = [];
+    for (var i=0; i < pointCount; i++) {
+    var tempLatLng = new google.maps.LatLng(lineCoordinates[i][0] , lineCoordinates[i][1]);
+    linePath.push(tempLatLng);
+    }
+
+    //Polyline properties are defined below
+    var lineOptions = {
+        path: linePath,
+        strokeWeight: 7,
+        strokeColor: '#FF00FF',
+        strokeOpacity: 0.9
+        }
+    var polyline = new google.maps.Polyline(lineOptions);
+
+    //Polyline is set to current map.
+    polyline.setMap(map);
+}
