@@ -20,7 +20,7 @@ function initMap() {
         center: googleIOLocation,
         zoom:5,
         mapTypeControlOptions:{
-            mapTypeIds:[google.maps.MapTypeId.ROADMAP, google.maps.MapTypeId.SATELLITE]
+            mapTypeIds:[google.maps.MapTypeId.ROADMAP]
         }
     };
 
@@ -29,7 +29,6 @@ function initMap() {
 
     //Set the base map to ROADMAP
     map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
-    map.overlayMapTypes.insertAt(0, buildPlanMapType);
 
     startButtonEvents();
 }
@@ -60,11 +59,23 @@ function addStandardMarker() {
                         map: map,
                         title: 'Random Marker - ' + markerId
                     });
+
+    var infowindow = new google.maps.InfoWindow({
+        content: 'Marker Info Window – ID : ' + markerId
+        });
+        
+    google.maps.event.addListener(marker, 'click', function(){
+                                                    infowindow.open(map, marker);
+                                                    }
+                        );
+
     // If you don't specify a Map during the initialization
     //of the Marker you can add it later using the line
     //below
     //marker.setMap(map);
     markerId++;
+
+
 }
 
 function addIconMarker() {
@@ -83,5 +94,9 @@ function addIconMarker() {
 
 google.maps.event.addDomListener(window, 'load', initMap);
 
+
+
+
+    
 
 console.log("maps.js has been loaded");
