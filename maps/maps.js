@@ -1,24 +1,18 @@
-var map;
-
-//Default to Google Event Venue
-var googleIOLocation = new google.maps.LatLng(38, 30);
 
 console.log("Loading maps.js");
 
+var map;
 
-let minLat = 36,
-maxLat = 42,
-minLng = 25,
-maxLng = 44,
-markerId = 1;
+//Default location
+let startPoint = new google.maps.LatLng(40.0192, 32.6953);
 
 function initMap() {
     console.log("initMaps() has been called");
     google.maps.visualRefresh = true;
 
     var mapOptions = {
-        center: googleIOLocation,
-        zoom:5,
+        center: startPoint,
+        zoom:10,
         mapTypeControlOptions:{
             mapTypeIds:[google.maps.MapTypeId.ROADMAP]
         }
@@ -30,46 +24,53 @@ function initMap() {
     //Set the base map to ROADMAP
     map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
 
-    addPolyline();
+    addPolygon();
+
+    addMarker();
 }
-
-
 
 google.maps.event.addDomListener(window, 'load', initMap);
 
 
-
-
-    
-
 console.log("maps.js has been loaded");
 
-var lineCoordinates = [
-    [41.01306,29.14672],[40.8096,29.4818],
-    [40.7971,29.9761],[40.7181,30.4980],
-    [40.8429,31.0253],[40.7430,31.6241],
-    [40.7472,32.1899],[39.9097,32.8216]
-    ];
+
+function addMarker(){
+    let marker = new google.maps.Marker({
+                    position: startPoint,
+                    icon: './img/coffee.png',
+                    title: "Starting point"
+                });
+    marker.setMap(map);
+}
+
     
-function addPolyline () {
+function addPolygon() {
+    let areaCoordinates = [
+        [40.0192,32.6953],[39.9434,32.5854],[39.8465,32.6898],[39.7465,32.8106],[39.8465, 33.0234],
+        [39.9139,33.0084],[40.0318,32.9260],
+        [40.0402,32.7832],[40.0192,32.6953]
+        ];
+
     //First we iterate over the coordinates array to create a
     // new array which includes objects of LatLng class.
-    var pointCount = lineCoordinates.length;
-    var linePath = [];
+    let pointCount = areaCoordinates.length;
+    let areaPath = [];
     for (var i=0; i < pointCount; i++) {
-    var tempLatLng = new google.maps.LatLng(lineCoordinates[i][0] , lineCoordinates[i][1]);
-    linePath.push(tempLatLng);
+        var tempLatLng = new google.maps.LatLng(areaCoordinates[i][0], areaCoordinates[i][1]);
+        areaPath.push(tempLatLng);
     }
 
-    //Polyline properties are defined below
-    var lineOptions = {
-        path: linePath,
-        strokeWeight: 7,
-        strokeColor: '#FF00FF',
-        strokeOpacity: 0.9
-        }
-    var polyline = new google.maps.Polyline(lineOptions);
+    let options = {
+        paths: areaPath,
+        strokeColor:'blue',
+        strokeOpacity:0.8,
+        strokeWeight:1,
+        fillColor:'#FF0000',
+        fillOpacity:0.2
+    };
 
-    //Polyline is set to current map.
-    polyline.setMap(map);
+    let polygon = new google.maps.Polygon(options);
+
+    polygon.setMap(map);
 }
