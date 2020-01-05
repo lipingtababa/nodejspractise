@@ -17,7 +17,7 @@ function initMap() {
 
     var mapOptions = {
         center: startPoint,
-        zoom:10,
+        zoom:8,
         mapTypeControlOptions:{
             mapTypeIds:[google.maps.MapTypeId.ROADMAP]
         }
@@ -33,12 +33,72 @@ function initMap() {
 
     addMarker();
 
-    markCenter();
+    markCenter(startPoint);
+
+    addRoute2Guangzhou();
+}
+
+var stops = [
+    [22.532918, 114.055876], // Futian
+    [22.559902, 113.955611], // Xili
+    [22.686023, 113.843983], // Fuyong
+    [22.811992, 113.743716], // Changan
+    [22.936680, 113.693246], // Houjie
+    [23.064985, 113.607265], // Machong
+    [23.142649, 113.512379], // Huangpu
+    [23.150640, 113.397385], // Chebei
+    [23.170692, 113.341776], // Tianhe
+    [23.160103, 113.259250], // Sanyuanli
+    [23.128553, 113.263912], // Yuexiu
+];
+
+function addRoute2Guangzhou(){
+
+    //Convert stops to an array of LatLng.
+    let path = [];
+    for(let i=0; i < stops.length; i++){
+        let stop = new google.maps.LatLng(stops[i][0], stops[i][1]);
+        path.push(stop);
+    }
+
+    // Defining arrow symbol
+    var arrowSymbol = {
+        strokeColor: 'blue',
+        scale: 3,
+        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
+    };
+
+    var lineOptions = {
+        path: path,
+        icons: [{
+            icon: arrowSymbol,
+            offset: '0%'
+        }],
+        strokeWeight: 2,
+        strokeColor: '#FF0000',
+        strokeOpacity: 0.8
+    };
+
+    var polyline = new google.maps.Polyline(lineOptions);
+
+    polyline.setMap(map);
+    // Calling the arrow animation function
+    animateArrow(polyline);
+}
+
+function animateArrow(line) {
+    var counter = 0;
+    var accessVar = window.setInterval(function() {
+        counter = (counter + 1) % 200;
+        var arrows = line.get('icons');
+        arrows[0].offset = (counter / 2) + '%';
+        line.set('icons', arrows);
+        console.log("cuonter is "+ counter);
+    }, 100);
 }
 
 
-
-function markCenter(){
+function markCenter(startPoint){
     var circleoption = {
         center: startPoint,
         radius: 3000,
