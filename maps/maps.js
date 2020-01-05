@@ -4,7 +4,7 @@ console.log("Loading maps.js");
 var map;
 
 //Default location
-let startPoint = new google.maps.LatLng(40.0192, 32.6953);
+let startPoint = new google.maps.LatLng(22.615592, 114.105046);
 
 function initMap() {
     console.log("initMaps() has been called");
@@ -38,7 +38,6 @@ console.log("maps.js has been loaded");
 function addMarker(){
     let marker = new google.maps.Marker({
                     position: startPoint,
-                    icon: './img/coffee.png',
                     title: "Starting point"
                 });
     marker.setMap(map);
@@ -47,9 +46,18 @@ function addMarker(){
     
 function addPolygon() {
     let areaCoordinates = [
-        [40.0192,32.6953],[39.9434,32.5854],[39.8465,32.6898],[39.7465,32.8106],[39.8465, 33.0234],
-        [39.9139,33.0084],[40.0318,32.9260],
-        [40.0402,32.7832],[40.0192,32.6953]
+        [22.847372, 113.882572], //Gong ming
+        [22.738107, 113.764886], //Sha jing
+        [22.452991, 113.891753], //She kou
+        [22.523168, 113.946005], //Hou hai
+        [22.507748, 114.055345], //Fu tian
+        [22.607495, 114.415947], //Kui chong
+        [22.445694, 114.512482], //Dapengwan
+        [22.513042, 114.627048], //Xi qi jiao
+        [22.660967, 114.516176], //Dayawan
+        [22.808525, 114.342455], //Pingdi
+        [22.656146, 114.173424], //Henggang
+        [22.847372, 113.882572], //Gong ming
         ];
 
     //First we iterate over the coordinates array to create a
