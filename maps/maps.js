@@ -1,13 +1,18 @@
 
-console.log("Loading maps.js");
-
+//Should be accesible from out of this file
 var map;
 
 //Default location
-let startPoint = new google.maps.LatLng(22.615592, 114.105046);
+let startPoint;
+
+console.log("Loading maps.js");
+google.maps.event.addDomListener(window, 'load', initMap);
+console.log("maps.js has been loaded");
+
 
 function initMap() {
     console.log("initMaps() has been called");
+    startPoint = new google.maps.LatLng(22.615592, 114.105046);
     google.maps.visualRefresh = true;
 
     var mapOptions = {
@@ -27,13 +32,25 @@ function initMap() {
     addPolygon();
 
     addMarker();
+
+    markCenter();
 }
 
-google.maps.event.addDomListener(window, 'load', initMap);
 
 
-console.log("maps.js has been loaded");
+function markCenter(){
+    var circleoption = {
+        center: startPoint,
+        radius: 3000,
+        fillColor:'#FF0000',
+        fillOpacity:'0.2',
+        strokeColor:'#FE0000',
+        strokeWeight:'1'
 
+    };
+    let marker = new google.maps.Circle(circleoption);
+    marker.setMap(map);
+}
 
 function addMarker(){
     let marker = new google.maps.Marker({
