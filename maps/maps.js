@@ -1,9 +1,10 @@
-
 var map1, map2;
+var infowindow = null;
 
 console.log("maps.js is being loaded");
 google.maps.event.addDomListener(window, 'load', initMaps);
 console.log("maps.js has been loaded");
+
 
 
 function initMaps(){
@@ -38,6 +39,18 @@ function initMap1() {
             map2.setZoom(map1.getZoom());
         }
     );
+
+    google.maps.event.addListener(map1, 'click', function(e){
+		console.log("popupLocation is being loaded");
+		if(infowindow != null){
+			infowindow.close();
+		}
+		infowindow = new google.maps.InfoWindow({
+				content: '<b>Location:</b><p></p>Latitude:'+e.latLng.lat()+'<p></p>Longitude:'+e.latLng.lng(),
+				position:e.latLng
+			});
+		infowindow.open(map1);
+	});
 }
 
 
